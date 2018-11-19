@@ -13,13 +13,21 @@ class App extends Component {
     );
   } 
 
-  render() {
+  renderContent = () => {
     const { lat, errorMessage } = this.state;
      
     if(!errorMessage && lat){ return <SeasonDisplay lat={lat} /> };
     if(errorMessage && !lat) { return errorMessage };
     
-    return <Spinner />
+    return <Spinner message="Please accept location request" />
+  }
+
+  render() {
+    return (
+      <div className="">
+        {this.renderContent()}
+      </div>
+    )
   }
 }
 
