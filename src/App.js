@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import SeasonDisplay from './SeasonDisplay';
+import Spinner from './Spinner';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+
+  state = { lat: null, errorMessage: '' };
+
+  componentDidMount() {
+    window.navigator.geolocation.getCurrentPosition(
+      position => this.setState({ lat: position.coords.latitude })
+      , err => this.setState({ errorMessage: err.message })
     );
+  } 
+
+  render() {
+    const { lat, errorMessage } = this.state;
+     
+    if(!errorMessage && lat){ return <SeasonDisplay lat={lat} /> };
+    if(errorMessage && !lat) { return errorMessage };
+    
+    return <Spinner />
   }
 }
 
